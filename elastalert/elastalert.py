@@ -288,7 +288,7 @@ class ElastAlerter(object):
                 res = self.thread_data.current_es.search(index=index, size=1, body=query,
                                                          _source_includes=[timestamp_field], ignore_unavailable=True)
             else:
-                res = self.thread_data.current_es.search(index=index, size=1, body=query, _source_include=[timestamp_field],
+                res = self.thread_data.current_es.search(index=index, size=1, body=query, _source_includes=[timestamp_field],
                                                          ignore_unavailable=True)
         except ElasticsearchException as e:
             self.handle_error("Elasticsearch query error: %s" % (e), {'index': index, 'query': query})
@@ -363,7 +363,7 @@ class ElastAlerter(object):
         if self.thread_data.current_es.is_atleastsixsix():
             extra_args = {'_source_includes': rule['include']}
         else:
-            extra_args = {'_source_include': rule['include']}
+            extra_args = {'_source_includes': rule['include']}
         scroll_keepalive = rule.get('scroll_keepalive', self.scroll_keepalive)
         if not rule.get('_source_enabled'):
             if rule['five']:
@@ -687,10 +687,10 @@ class ElastAlerter(object):
                                                    _source_includes=['endtime', 'rule_name'])
                 else:
                     res = self.writeback_es.search(index=index, size=1, body=query,
-                                                   _source_include=['endtime', 'rule_name'])
+                                                   _source_includes=['endtime', 'rule_name'])
             else:
                 res = self.writeback_es.deprecated_search(index=index, doc_type=doc_type,
-                                                          size=1, body=query, _source_include=['endtime', 'rule_name'])
+                                                          size=1, body=query, _source_includes=['endtime', 'rule_name'])
             if res['hits']['hits']:
                 endtime = ts_to_dt(res['hits']['hits'][0]['_source']['endtime'])
 
@@ -1409,7 +1409,7 @@ class ElastAlerter(object):
         query = {'query': {'term': {'_id': db_name}}}
         try:
             # TODO use doc_type = _doc
-            res = es.deprecated_search(index='kibana-int', doc_type='dashboard', body=query, _source_include=['dashboard'])
+            res = es.deprecated_search(index='kibana-int', doc_type='dashboard', body=query, _source_includes=['dashboard'])
         except ElasticsearchException as e:
             raise EAException("Error querying for dashboard: %s" % (e)).with_traceback(sys.exc_info()[2])
 
@@ -1902,10 +1902,10 @@ class ElastAlerter(object):
                                                    _source_includes=['until', 'exponent'])
                 else:
                     res = self.writeback_es.search(index=index, size=1, body=query,
-                                                   _source_include=['until', 'exponent'])
+                                                   _source_includes=['until', 'exponent'])
             else:
                 res = self.writeback_es.deprecated_search(index=index, doc_type=doc_type,
-                                                          size=1, body=query, _source_include=['until', 'exponent'])
+                                                          size=1, body=query, _source_includes=['until', 'exponent'])
         except ElasticsearchException as e:
             self.handle_error("Error while querying for alert silence status: %s" % (e), {'rule': rule_name})
 

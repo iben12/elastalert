@@ -106,7 +106,7 @@ class ElasticSearchClient(Elasticsearch):
         "_source",
         "_source_exclude",
         "_source_excludes",
-        "_source_include",
+        "_source_includes",
         "_source_includes",
         "allow_no_indices",
         "allow_partial_search_results",
@@ -160,7 +160,7 @@ class ElasticSearchClient(Elasticsearch):
             list of fields to return
         :arg _source_exclude: A list of fields to exclude from the returned
             _source field
-        :arg _source_include: A list of fields to extract and return from the
+        :arg _source_includes: A list of fields to extract and return from the
             _source field
         :arg allow_no_indices: Whether to ignore if a wildcard indices
             expression resolves into no concrete indices. (This includes `_all`
